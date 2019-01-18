@@ -1,6 +1,7 @@
 // pages/calender/calender.js
 const GetPeriod = require("../../utils/getperiod.js");
 Page({
+  
 
   /**
    * 页面的初始数据
