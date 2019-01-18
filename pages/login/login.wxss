@@ -1,0 +1,5 @@
+/* pages/login/login.wxss */
+
+.form_text input {
+  background-color: white;
+}

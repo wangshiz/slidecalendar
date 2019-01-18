@@ -1,0 +1,13 @@
+<!--pages/login/login.wxml-->
+<form bindsubmit="formSubmit" bindreset="formReset">
+<view class="form_text">
+    <label>username:</label>
+    <input value="" name="uname" placeholder="please input uname here"></input>
+  </view>
+  <view class="form_text">
+    <label>pwd:</label>
+    <input value="" name="pwd" placeholder="please input pwd here"></input>
+  </view> 
+  <button form-type='submit'>submit</button>
+  <button form-type='reset'>reset</button>
+</form>
