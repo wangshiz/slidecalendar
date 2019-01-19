@@ -1,0 +1,31 @@
+<!--pages/calender/calender.wxml-->
+<text>pages/calender/calender.wxml</text>
+
+  <swiper indicator-dots='{{indicatordots}}'
+  autoplay='{{autoplay}}'
+  current='{{swiperIndex}}' circular="{{circular}}" bindchange='changearr'
+  duration='{{duration}}'
+  >
+    <swiper-item item-id="first">
+      <view wx:key="item.date" wx:for="{{daysArr.first}}" wx:for-item="item">
+        <view style='border:solid 1px black; width: 30px;float: left;text-align:center;'>{{item.day}}</view>
+      </view>
+    </swiper-item>
+    <swiper-item item-id="second">
+    
+      <block wx:key="item.date" wx:for="{{daysArr.second}}" wx:for-item="item">
+        <view style='border:solid 1px black; width: 30px;float: left;text-align:center;'>{{item.day}}</view>
+      </block>
+    </swiper-item>
+    <swiper-item item-id="third">
+      <view wx:key="x.date" wx:for="{{daysArr.third}}" wx:for-item="item">
+        <view style='border:solid 1px black; width: 30px;float: left;text-align:center;'>{{item.day}}</view>
+        <view>123</view>
+      </view>
+    </swiper-item>
+    <swiper-item item-id="fourth">
+      <view wx:key="x.date" wx:for="{{daysArr.fourth}}" wx:for-item="item">
+        <view style='border:solid 1px black; width: 30px;float: left;text-align:center;'>{{item.day}}</view>
+      </view>
+    </swiper-item>
+  </swiper>

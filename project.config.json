@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -14,7 +14,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.5.0",
 	"appid": "wxc3272f5bb9c58111",
-	"projectname": "slidercalendar",
+	"projectname": "logintest",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
