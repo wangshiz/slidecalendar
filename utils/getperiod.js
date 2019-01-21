@@ -1,11 +1,12 @@
 class GetPeriod {
   constructor(year, month, day) {
     this.now = (year == undefined || month == undefined || day == undefined)? new Date(): new Date(year, month, day) 
-    this.nowYear = this.now.getYear(); //当前年 
+    //console.log(this.now.getFullYear())
+    this.nowYear = this.now.getFullYear(); //当前年 
     this.nowMonth = this.now.getMonth(); //当前月 
     this.nowDay = this.now.getDate(); //当前日 
     this.nowDayOfWeek = this.now.getDay() == 0? 7: this.now.getDay(); //今天是本周的第几天 
-    this.nowYear += (this.nowYear < 2000) ? 1900 : 0;
+    //this.nowYear += (this.nowYear < 2000) ? 1900 : 0;
   }
 
   //获取当日零点的时间
@@ -24,6 +25,12 @@ class GetPeriod {
     let mymonth = date.getMonth() + 1;
     let myweekday = date.getDate();
     return [myyear, mymonth, myweekday].map(this.formatNumber).join('-');
+  }
+  //格式化年月
+  formatYearMonth(date) {
+    let myyear = date.getFullYear();
+    let mymonth = date.getMonth() + 1;
+    return [myyear, mymonth].map(this.formatNumber).join('-');
   }
   //获取某月的天数
   getMonthDays(myMonth) {
@@ -53,10 +60,17 @@ class GetPeriod {
   getNowDate() {
     return this.formatDate(new Date(this.nowYear, this.nowMonth, this.nowDay));
   }
+
+  //单独获取今天的年月
+  getNowYearMonth() {
+    return this.formatYearMonth(new Date(this.nowYear, this.nowMonth, this.nowDay));
+  }
+
   //获取本周的开始日期
   getWeekStartformatDate() {
     return this.formatDate(new Date(this.nowYear, this.nowMonth, this.nowDay - this.nowDayOfWeek + 1));
   }
+
   //获取本周的开始日期
   getWeekStartDate() {
     const date = new Date(this.nowYear, this.nowMonth, this.nowDay - this.nowDayOfWeek + 1) 

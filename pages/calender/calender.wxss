@@ -1,1 +1,24 @@
 /* pages/calender/calender.wxss */
+
+.calendar-box {
+  width: 30px;
+  float: left;
+  text-align:center;
+}
+
+.calendar-month-box {
+  width: 210px;
+  height: 30px;
+}
+
+.month-icon {
+  width: 10%;
+  float: left;
+}
+
+.year-month-icon {
+  width: 80%;
+  text-align: center;
+  float: left;
+}
+

@@ -35,5 +35,5 @@ const formatDay = date => {
 
 module.exports = {
   formatTime: formatTime,
-  formatDay: formatDay
+  formatDay: formatDay,
 }
