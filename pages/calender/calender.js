@@ -6,12 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    week:[1, 2, 3, 4, 5, 6, 7],
+    week:["一", "二", "三", "四", "五", "六", "日"],
     year: null,   //年
     month: null,  //月
     day: null,    //日
-    checkdate: null,  //当前时间
+    checkdate: null,  //选中值
     year_month: null,
+    start_year_month: "2018-05",
+    now_year_month: null, //当前月份，固定值
+    today: null, //当前年月日，固定值
     daysArr: {
       first: [],
       second: [],
@@ -20,7 +23,7 @@ Page({
     },       //天数数组，固定21个
     daysArrLength: 4,
     daycount: null,  //当前月份
-    indicatordots: true,
+    indicatordots: false,
     autoplay: false,
     circular: true,
     duration: 500,
@@ -62,9 +65,13 @@ Page({
       year: year,   //年
       month: month,  //月
       day: day,    //日
-      checkday: year_month_day,
-      year_month: year_month
+      checkdate: year_month_day,
+      year_month: year_month,
+      now_year_month:year_month,
+      today: year_month_day
     })
+
+    console.log(this.data.today)
   },
 
   initWeekData: function (secondDayNum, swiperIndex) {
@@ -99,6 +106,7 @@ Page({
       firstDayNum += oneDayMillisecond
       secondDayNum += oneDayMillisecond
       thirdDayNum += oneDayMillisecond
+      
     }
 
     if (swiperIndex == null) {
@@ -106,16 +114,34 @@ Page({
       this.data.daysArr.second = seconddays
       this.data.daysArr.third = thirddays
     } else {
-
+      if (swiperIndex == 0){
+        this.data.daysArr[this.data.swiperMap[this.data.daysArrLength - 1]] = firstdays
+        this.data.daysArr[this.data.swiperMap[swiperIndex]] = seconddays
+        this.data.daysArr[this.data.swiperMap[swiperIndex + 1]] = thirddays
+      } else if (swiperIndex == 3){
+        this.data.daysArr[this.data.swiperMap[swiperIndex - 1]] = firstdays
+        this.data.daysArr[this.data.swiperMap[swiperIndex]] = seconddays
+        this.data.daysArr[this.data.swiperMap[0]] = thirddays
+      } else {
+        this.data.daysArr[this.data.swiperMap[swiperIndex - 1]] = firstdays
+        this.data.daysArr[this.data.swiperMap[swiperIndex]] = seconddays
+        this.data.daysArr[this.data.swiperMap[swiperIndex + 1]] = thirddays
+      }
     }
 
     var that = this.data.daysArr
+    var current = swiperIndex == null? this.data.swiperIndex : swiperIndex
     this.setData({
-      daysArr: that
+      daysArr: that,
+      swiperIndex: current
     })
   },
 
+  //修改数组结构
   changearr: function(e) {
+    if (e.detail.source != "touch") {
+      return
+    }
     let nowIndex = e.detail.current
       , lastIndex = this.data.swiperIndex
       , changeIndex;
@@ -136,12 +162,11 @@ Page({
     }
 
     let nowArr = this.data.daysArr[this.data.swiperMap[nowIndex]]
-    console.log("nowArr:"+nowArr)
     var changeArr = this.data.daysArr[changeIndex]
       , date = new Date(nowArr[0].date)
       , nowDateNum = Date.parse(date)
       , changeDateNum
-    console.log("date："+date)
+      , realNextDate
 
     if (nowIndex == 0 && lastIndex == 3) {
       lastIndex = -1
@@ -150,13 +175,15 @@ Page({
     if (nowIndex == 3 && lastIndex == 0) {
       nowIndex = -1
     }
-
+    // 往右滑
     if (lastIndex > nowIndex){
       changeDateNum = nowDateNum - (oneDayMillisecond * 7) 
+      realNextDate = new Date(this.data.year, this.data.month, this.data.day - 7)
     }
     // 往左滑
     if (lastIndex < nowIndex){
       changeDateNum = nowDateNum + (oneDayMillisecond * 7)
+      realNextDate = new Date(this.data.year, this.data.month, this.data.day + 7)
     }
 
     var newDays = this.buildNewWeek(changeDateNum)
@@ -164,18 +191,22 @@ Page({
     that[changeIndex] = newDays
 
     //处理头部的年月
-    let year = nowArr[0].year
-      , month = nowArr[0].month
-      , day = nowArr[0].day
-      , year_month = [year, month + 1].map(this.formatNumber).join('-');
+    // let year = nowArr[0].year
+    //   , month = nowArr[0].month
+    //   , year_month = [year, month + 1].map(this.formatNumber).join('-');
 
-    console.log(year+"/"+month+"/"+day)
+    //处理data里的年月日
+    console.log("realNextDate:"+realNextDate)
+    var realYear = realNextDate.getFullYear()
+      , realMonth = realNextDate.getMonth()
+      , realDay = realNextDate.getDate();
+
     this.setData({
-      year: year,
-      month: month,
-      day: day,
+      year: realYear,
+      month: realMonth,
+      day: realDay,
       swiperIndex: e.detail.current,
-      year_month: year_month,
+      year_month: [realYear, realMonth + 1].map(this.formatNumber).join('-'),
       daysArr: that
     })
     
@@ -197,25 +228,80 @@ Page({
     return newWeek
   },
 
-  prevMonth() {
-    var current = this.data.swiperIndex > 0 ? this.data.swiperIndex - 1 : this.data.daysArrLength - 1
-    console.log(current)
-    //当月天数
-    let monthSum = this.getMonthDays("prev")
-    this.setData({
-      swiperIndex: current
-    })
+  //获取某月的天数
+  changeMonth(e) {
+    var monthStartDate, monthEndDate, days, changeIndex
+
+    if (e.target.dataset.direction == "prev") {
+      monthEndDate = new Date(this.data.year, this.data.month - 1, 1);
+      monthStartDate = new Date(this.data.year, this.data.month, 1);
+      changeIndex = this.data.swiperIndex > 0 ? this.data.swiperIndex - 1 : this.data.daysArrLength - 1
+    }
+
+    if (e.target.dataset.direction == "next") {
+      monthEndDate = new Date(this.data.year, this.data.month + 1, 1);
+      monthStartDate = new Date(this.data.year, this.data.month, 1);
+      changeIndex = this.data.swiperIndex < this.data.daysArrLength - 1 ? this.data.swiperIndex + 1 : 0
+    }
+    days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
+   
+    this.restructuringdaysArr(days, changeIndex)
+
   },
-  nextMonth() {
-  
-    var current = this.data.swiperIndex < this.data.daysArrLength - 1 ? this.data.swiperIndex + 1 : 0
-    console.log(current)
-    let monthSum = this.getMonthDays("next")
+
+
+  //重新编排数据
+  restructuringdaysArr(days, changeIndex){
+    // 新建一个月份
+    var changeDay = new GetPeriod(this.data.year, this.data.month, this.data.day + days)
+    console.log("changeDay:" + changeDay)
+    var firstDay = changeDay.getWeekStartDate()
+    console.log("firstday:"+firstDay)
+    let firstDayNum = Date.parse(firstDay)
+    console.log("changeIndex:"+changeIndex)
+    //初始化数据
+    this.initWeekData(firstDayNum, changeIndex)
+
+    var realNextYear = changeDay.nowYear
+      , realNextMonth = changeDay.nowMonth
+      , realNextDay = changeDay.nowDay
+
     this.setData({
-      swiperIndex: current
+      year: realNextYear,
+      month: realNextMonth,
+      day: realNextDay,
+      year_month: changeDay.getNowYearMonth()
+    })
+
+    console.log(realNextYear + "/" + realNextMonth + "/" + realNextDay)
+  },
+
+  //直接选择月份
+  bindDateChange(e) {
+    var arr = e.detail.value.split("-")
+    var date = new GetPeriod(arr[0], parseInt(arr[1]) - 1, "01")
+    var firstdayNum = date.getWeekStartDate().getTime()
+    var swiperIndex = this.data.swiperIndex
+    console.log(swiperIndex)
+    this.initWeekData(firstdayNum, swiperIndex)
+
+    this.setData({
+      year: date.nowYear,
+      month: date.nowMonth,
+      day: date.nowDay,
+      year_month: date.getNowYearMonth()
+    })
+
+  },
+
+  //选择日期
+  selectdate(e) {
+    this.setData({
+      checkdate: e.currentTarget.dataset.date
     })
   },
 
+  //处理数据
   formatDate(date) {
     let myyear = date.getFullYear();
     let mymonth = date.getMonth() + 1;
@@ -227,25 +313,4 @@ Page({
     n = n.toString()
     return n[1] ? n : '0' + n
   },
-
-  //获取某月的天数
-  getMonthDays(direction) {
-    var monthStartDate, monthEndDate, days
-
-    if (direction == "prev") {
-      monthStartDate = new Date(this.data.year, this.data.month - 1, 1);
-      monthEndDate = new Date(this.data.year, this.data.month, 1);
-    }
-
-    if (direction == "next") {
-      monthStartDate = new Date(this.data.year, this.data.month, 1);
-      monthEndDate = new Date(this.data.year, this.data.month + 1, 1);
-    }
-    days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
-   
-    console.log("111111111"+new Date(2019, 0, 32))
-    console.log(days)
-    return days;
-  }
-
 })

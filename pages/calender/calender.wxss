@@ -1,19 +1,33 @@
 /* pages/calender/calender.wxss */
 
-.calendar-box {
-  width: 30px;
+swiper{
+  height: 100rpx;
+}
+
+.weekday-box {
+  width: 14.28%;
+  height: 50rpx;
   float: left;
   text-align:center;
 }
 
+.calendar-box view{
+  width: 14.28%;
+  padding: 5rpx 0rpx;
+  float: left;
+  text-align:center;
+  border-bottom: 1px black solid;
+}
+
 .calendar-month-box {
-  width: 210px;
+  width: 100%;
   height: 30px;
 }
 
 .month-icon {
   width: 10%;
   float: left;
+  text-align: center;
 }
 
 .year-month-icon {
@@ -22,3 +36,24 @@
   float: left;
 }
 
+.today {
+  color: #88a1fd;
+}
+
+.choice view{
+  border-radius: 50%;
+  background: #88a1fd;
+  background-position:center;
+  color: white;
+}
+
+.notCurrent {
+  color: silver;
+}
+
+.gril-data {
+  width: 100%;
+  height: 100%;
+  padding-top: 20rpx; 
+  text-align: center;
+}

@@ -1,13 +1,15 @@
 <!--pages/calender/calender.wxml-->
 <view class='calendar-month-box'>
-  <view class='month-icon' bindtap='prevMonth'>《</view>
+  <view class='month-icon' catchtap='changeMonth' data-direction='prev'>《</view>
+  <picker mode="date" value="{{year_month}}" start="{{start_year_month}}" end="{{now_year_month}}" fields='month' bindchange="bindDateChange">
   <view class='year-month-icon'>{{year_month}}</view>
-  <view class='month-icon' bindtap='nextMonth'>》</view>
+  </picker>
+  <view class='month-icon' catchtap='changeMonth' data-direction="next">》</view>
 </view>
 
 
 <block wx:for='{{week}}' wx:key='123'>
-  <view class='calendar-box'>{{item}}</view>
+  <view class='weekday-box'>{{item}}</view>
 </block>
 
 <swiper indicator-dots='{{indicatordots}}'
@@ -16,23 +18,27 @@ current='{{swiperIndex}}' circular="{{circular}}" bindchange='changearr'
 duration='{{duration}}' 
 >
   <swiper-item item-id="first">
-    <view wx:key="item.date" wx:for="{{daysArr.first}}" wx:for-item="item">
-      <view class='calendar-box'>{{item.day}}</view>
+    <view wx:key="item.date" wx:for="{{daysArr.first}}" wx:for-item="item" class='calendar-box {{item.month === month?"":"notCurrent"}} {{item.date === today?"today":""}} {{item.date == checkdate ? "choice":""}}' catchtap='selectdate' data-date='{{item.date}}'>
+      <view>{{item.day}}</view>
     </view>
   </swiper-item>
   <swiper-item item-id="second">
-    <view wx:key="item.date" wx:for="{{daysArr.second}}" wx:for-item="item">
-      <view class='calendar-box'>{{item.day}}</view>
+    <view wx:key="item.date" wx:for="{{daysArr.second}}" wx:for-item="item" class='calendar-box {{item.month === month?"":"notCurrent"}} {{item.date === today?"today":""}} {{item.date == checkdate ? "choice":""}}' catchtap='selectdate' data-date='{{item.date}}'>
+      <view>{{item.day}}</view>
     </view>
   </swiper-item>
   <swiper-item item-id="third">
-    <view wx:key="x.date" wx:for="{{daysArr.third}}" wx:for-item="item">
-      <view class='calendar-box'>{{item.day}}</view>
+    <view wx:key="item.date" wx:for="{{daysArr.third}}" wx:for-item="item" class='calendar-box {{item.month === month?"":"notCurrent"}} {{item.date === today?"today":""}} {{item.date == checkdate ? "choice":""}}' catchtap='selectdate' data-date='{{item.date}}'>
+      <view>{{item.day}}</view>
     </view>
   </swiper-item>
   <swiper-item item-id="fourth">
-    <view wx:key="x.date" wx:for="{{daysArr.fourth}}" wx:for-item="item">
-      <view class='calendar-box'>{{item.day}}</view>
+    <view wx:key="item.date" wx:for="{{daysArr.fourth}}" wx:for-item="item" class='calendar-box {{item.month === month?"":"notCurrent"}} {{item.date === today?"today":""}} {{item.date == checkdate ? "choice":""}}' catchtap='selectdate' data-date='{{item.date}}'>
+      <view>{{item.day}}</view>
     </view>
   </swiper-item>
 </swiper>
+
+<view class='gril-data'>
+  {{checkdate}}
+</view>
