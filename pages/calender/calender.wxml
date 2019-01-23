@@ -1,10 +1,10 @@
 <!--pages/calender/calender.wxml-->
 <view class='calendar-month-box'>
-  <view class='month-icon' catchtap='changeMonth' data-direction='prev'>《</view>
+  <view class='month-icon'><image src="../../image/left.png" catchtap='changeMonth' data-direction='prev'></image></view>
   <picker mode="date" value="{{year_month}}" start="{{start_year_month}}" end="{{now_year_month}}" fields='month' bindchange="bindDateChange">
   <view class='year-month-icon'>{{year_month}}</view>
   </picker>
-  <view class='month-icon' catchtap='changeMonth' data-direction="next">》</view>
+  <view class='month-icon' catchtap='changeMonth' data-direction="next"><image src="../../image/right.png" catchtap='changeMonth' data-direction="next"></image></view>
 </view>
 
 
@@ -40,5 +40,5 @@ duration='{{duration}}'
 </swiper>
 
 <view class='gril-data'>
-  {{checkdate}}
+  选中日期：{{checkdate}}
 </view>

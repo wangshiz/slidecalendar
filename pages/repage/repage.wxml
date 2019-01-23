@@ -1,3 +1,0 @@
-<!--pages/repage/repage.wxml-->
-<text>用户：{{nickname}}</text>
-<text>{{msg}}</text>

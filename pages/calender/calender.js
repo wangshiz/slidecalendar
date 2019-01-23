@@ -1,4 +1,3 @@
-// pages/calender/calender.js
 const GetPeriod = require("../../utils/getperiod.js");
 const oneDayMillisecond = 86400000  //一天毫秒数  24 * 60 * 60 * 1000
 Page({
@@ -46,8 +45,6 @@ Page({
       , weekday = date.nowDayOfWeek
         //第一天
       , firstDay = date.getWeekStartDate()
-        //最后一天
-      , endDay = date.getWeekEndDate()
 
     //格式化年月
     let year_month = date.getNowYearMonth()
@@ -55,7 +52,6 @@ Page({
     //格式化年月日
       , year_month_day = date.getNowDate()
         
-    console.log("year_month_day:"+year_month_day)
     let firstDayNum = Date.parse(firstDay)
 
     //初始化数据
@@ -70,14 +66,12 @@ Page({
       now_year_month:year_month,
       today: year_month_day
     })
-
-    console.log(this.data.today)
   },
 
+  //初始化数据
   initWeekData: function (secondDayNum, swiperIndex) {
     //建立三个数组
     let firstdays = [], seconddays = [] , thirddays = []
-    console.log(secondDayNum)
     let firstDayNum = secondDayNum - oneDayMillisecond * 7
     , thirdDayNum = secondDayNum + oneDayMillisecond * 7
 
@@ -190,13 +184,7 @@ Page({
     var that = this.data.daysArr
     that[changeIndex] = newDays
 
-    //处理头部的年月
-    // let year = nowArr[0].year
-    //   , month = nowArr[0].month
-    //   , year_month = [year, month + 1].map(this.formatNumber).join('-');
-
     //处理data里的年月日
-    console.log("realNextDate:"+realNextDate)
     var realYear = realNextDate.getFullYear()
       , realMonth = realNextDate.getMonth()
       , realDay = realNextDate.getDate();
@@ -231,7 +219,6 @@ Page({
   //获取某月的天数
   changeMonth(e) {
     var monthStartDate, monthEndDate, days, changeIndex
-
     if (e.target.dataset.direction == "prev") {
       monthEndDate = new Date(this.data.year, this.data.month - 1, 1);
       monthStartDate = new Date(this.data.year, this.data.month, 1);
@@ -243,22 +230,16 @@ Page({
       monthStartDate = new Date(this.data.year, this.data.month, 1);
       changeIndex = this.data.swiperIndex < this.data.daysArrLength - 1 ? this.data.swiperIndex + 1 : 0
     }
-    days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
-   
+    days = (monthEndDate - monthStartDate) / oneDayMillisecond;
     this.restructuringdaysArr(days, changeIndex)
-
   },
-
 
   //重新编排数据
   restructuringdaysArr(days, changeIndex){
     // 新建一个月份
     var changeDay = new GetPeriod(this.data.year, this.data.month, this.data.day + days)
-    console.log("changeDay:" + changeDay)
     var firstDay = changeDay.getWeekStartDate()
-    console.log("firstday:"+firstDay)
     let firstDayNum = Date.parse(firstDay)
-    console.log("changeIndex:"+changeIndex)
     //初始化数据
     this.initWeekData(firstDayNum, changeIndex)
 
@@ -272,8 +253,6 @@ Page({
       day: realNextDay,
       year_month: changeDay.getNowYearMonth()
     })
-
-    console.log(realNextYear + "/" + realNextMonth + "/" + realNextDay)
   },
 
   //直接选择月份
@@ -282,7 +261,6 @@ Page({
     var date = new GetPeriod(arr[0], parseInt(arr[1]) - 1, "01")
     var firstdayNum = date.getWeekStartDate().getTime()
     var swiperIndex = this.data.swiperIndex
-    console.log(swiperIndex)
     this.initWeekData(firstdayNum, swiperIndex)
 
     this.setData({
@@ -291,7 +269,6 @@ Page({
       day: date.nowDay,
       year_month: date.getNowYearMonth()
     })
-
   },
 
   //选择日期

@@ -26,12 +26,19 @@ swiper{
 
 .month-icon {
   width: 10%;
+  height: 74rpx;
   float: left;
-  text-align: center;
+}
+
+.month-icon image {
+  width: 74rpx;
+  height: 74rpx;
 }
 
 .year-month-icon {
   width: 80%;
+  line-height: 74rpx;
+  height: 74rpx;
   text-align: center;
   float: left;
 }
