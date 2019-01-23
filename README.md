@@ -19,6 +19,6 @@
 <br/>
 
 ### 友情说明：
-* util/getperiod.js 用的是下面这位大佬写的，自己拉过来根据本需求写的 &nbsp;[链接地址](https://github.com/Rattenking/GetPeriod)
+* util/getperiod.js 用的是下面这位大佬写的，自己拉过来根据本需求改的 &nbsp;[链接地址](https://github.com/Rattenking/GetPeriod)
 * 如果发现bug，欢迎向我提Issues
 * 我是做java的，所以界面丑一点，只实现了功能
