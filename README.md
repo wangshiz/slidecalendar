@@ -6,4 +6,5 @@
 * 日期点击选择
 
 ### 效果展示
+![image1](https://github.com/wangshiz/wangshizlocal/blob/master/image/slidecalendar/image1.png)
 
